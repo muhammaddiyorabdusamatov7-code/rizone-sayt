@@ -1,4 +1,4 @@
-api/ //  Usta Rizo AI: mijoz xabarini Claude'ga yuboradi, yozilish to'liq bo'lsa lidni Telegram'ga jo'natadi
+// Usta Rizo AI: mijoz xabarini Claude'ga yuboradi, yozilish to'liq bo'lsa lidni Telegram'ga jo'natadi
 const { sendLead } = require('./_telegram');
 
 const SYSTEM = `Sen "Usta Rizo" — Farg'onadagi RizOne avtoservisning do'stona AI-yordamchisisan. Faqat o'zbek tilida (lotin), sodda, iliq, qisqa (2–4 gap) javob ber, xuddi tajribali usta mijoz bilan gaplashgandek. "Siz" deb murojaat qil.
