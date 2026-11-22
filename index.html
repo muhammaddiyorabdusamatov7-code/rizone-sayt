@@ -121,6 +121,7 @@ input:focus-visible{outline:2px solid var(--amber);outline-offset:1px}
     <div class="log" id="log" aria-live="polite"></div>
     <div class="chips" id="chips">
       <button class="chip" type="button">Servisga yozilmoqchiman</button>
+      <button class="chip" type="button">📍 Manzil</button>
       <button class="chip" type="button">Moy almashtirish kerak</button>
       <button class="chip" type="button">Xodovoyda stuk bor</button>
       <button class="chip" type="button">Karobka tepkiyapti</button>
@@ -135,7 +136,6 @@ input:focus-visible{outline:2px solid var(--amber);outline-offset:1px}
 </div>
 
 <script>
-
 const log=document.getElementById('log'), inp=document.getElementById('inp'), form=document.getElementById('form'), sendBtn=document.getElementById('send'), mascot=document.getElementById('mascot'), bubble=document.getElementById('bubble');
 const history=[]; let busy=false, booked=false;
 const GREETING="Salom! Men Usta Rizo, RizOne avtoservis yordamchisiman. Mashinangiz modeli va nima bezovta qilayotganini yozing — tushuntirib beraman va qulay vaqtga servisga yozib qo'yaman.";
@@ -156,22 +156,57 @@ function showBooking(b){
 /* ---- Fallback (AI ulanmagan ko'rinishda): oddiy skript ---- */
 const steps=[['ism','Ismingiz nima?'],['telefon','Telefon raqamingizni yozing (masalan 90 123 45 67).'],['mashina','Mashinangiz modeli va yili?'],['muammo','Qanday muammo yoki xizmat kerak?'],['vaqt','Qaysi kun va soat sizga qulay?']];
 let fb=null;
+const FAQ=[
+ [/assalom|salom|привет|здравств/,"Va alaykum assalom! Mashinangiz modeli va nima muammo borligini yozing, yordam beraman."],
+ [/vizov|evakuator|yo'lda qol|o't olmay|zavod bo'lmay|не завод/,"Vizov xizmatimiz bor. Tezroq qo'ng'iroq qiling: +998 93 989 34 34."],
+ [/tormoz/,"Tormoz bilan muammo bo'lsa, mashinani haydamang, xavfli. Qo'ng'iroq qiling: +998 93 989 34 34, usta yordam beradi."],
+ [/moy|масл/,"Dvigatel moyi odatda har 8–10 ming km da, metan yoki taksida 5–7 ming km da almashtiriladi. AKPP moyini ham unutmang, har 40–60 ming km."],
+ [/mers/,"Mers xodovoydan keyin Tracker, Onix va Gentra yo'lda ancha yumshoq va jim yuradi. Narxini usta mashinani ko'rib aytadi."],
+ [/stuk|xodov|hadov|xadov|silkin|amortiz|стук|ходов/,"Stuk ko'pincha amortizator, sharovoy yoki stoyka vtulkalaridan bo'ladi. Aniq sababini vibrostend va xodovoy diagnostikada topamiz."],
+ [/karob|akpp|tepk|cvt|dsg|avtomat|коробк/,"Karobka tepishi ko'pincha moy eskirgani yoki klapanlar bilan bog'liq. Kompyuter diagnostikada sababini aniqlaymiz. Kechiktirmang, ta'mir qimmatlashishi mumkin."],
+ [/qiz(ib|iyap|yap)|pechka|radiator|antifriz|перегр/,"Motor qizib ketsa, darhol to'xtab, motorni o'chiring va haydamang. Pechka va radiator xizmatini ham qilamiz."],
+ [/motor|dvigatel|двигат/,"Motor ta'mirini qilamiz. Avval kompyuter diagnostika qilib, sababini aniq topamiz."],
+ [/diagnost|kompyuter|chek|check|диагност/,"Kompyuter va xodovoy diagnostika qilamiz, vibrostend ham bor."],
+ [/razval|balans|развал/,"Razval va balansirovka qilamiz."],
+ [/zapchast|ehtiyot qism|detal|запчаст/,"Original GM zapchast do'konimiz bor, yetkazib berish ham bor. Aniq qism uchun qo'ng'iroq qiling: +998 93 989 34 34."],
+ [/narx|qancha|necha pul|стоим|цена|сколько/,"Aniq narxni usta mashinani ko'rgandan keyin aytadi. Batafsil: +998 93 989 34 34."],
+ [/ish vaqt|soat nech|ochiq|yopiq|dam olish|qachon ishla|график|время работ/,"Ish vaqtini aniqlash uchun qo'ng'iroq qiling: +998 93 989 34 34."],
+ [/telefon|raqam|nomer|aloqa|bog'lan|qo'ng'iroq|telegram|номер/,"Bizga qo'ng'iroq qiling: +998 93 989 34 34 yoki +998 97 966 55 44. Telegram: @RizOneAuto."],
+ [/rahmat|raxmat|спасибо/,"Arzimaydi! Yana savol bo'lsa, yozing."]
+];
+const BOOK_RE=/yozil|yozib qo'y|bron|zapis|запис|kelmoqchi|olib kel/;
+const YES_RE=/^(ha|xa|ha\b.*|xop|xo'p|mayli|ok|okey|да|albatta|yozing|yoz|kerak)\b/;
+const NO_RE=/^(yo'q|yoq|kerak emas|нет|shart emas)/;
+const CANCEL_RE=/bekor|to'xta|kerak emas|отмен/;
+let offer=false;
+function startBooking(){fb={i:0,data:{}};offer=false;return "Servisga yozib qo'yaman. "+steps[0][1];}
 function scripted(t){
-  const s=t.toLowerCase();
-  if(fb){fb.data[steps[fb.i][0]]=t;fb.i++; if(fb.i<steps.length)return steps[fb.i][1]; const d=fb.data;fb=null;setTimeout(()=>{showBooking(d);fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).catch(()=>{})},300);return 'Rahmat, '+d.ism+'! Hammasini yozib oldim.';}
-  let pre='';
-  if(/moy|масл/.test(s))pre='Dvigatel moyi odatda har 8–10 ming km da, metan yoki taksida 5–7 ming km da almashtiriladi. AKPP moyini ham unutmang — har 40–60 ming km. ';
-  else if(/stuk|xodov|hadov|xadov|silkin/.test(s))pre='Stuk ko\'pincha amortizator, sharovoy yoki stoyka vtulkalaridan bo\'ladi. Aniq sababini vibrostend va xodovoy diagnostikada topamiz. ';
-  else if(/mers/.test(s))pre='Mers xodovoydan keyin Tracker, Onix va Gentra yo\'lda ancha yumshoq va jim yuradi. Narxini usta mashinani ko\'rib aytadi. ';
-  else if(/karob|akpp|tepk|cvt|dsg|avtomat/.test(s))pre='Karobka tepishi ko\'pincha moy eskirgani yoki klapanlar bilan bog\'liq. Kompyuter diagnostikada sababini aniqlaymiz — kechiktirmang, ta\'mir qimmatlashishi mumkin. ';
-  else if(/narx|qancha|necha pul/.test(s))pre='Aniq narxni usta mashinani ko\'rgandan keyin aytadi. ';
-  fb={i:0,data:{}};
-  return pre+'Servisga yozib qo\'yay. '+steps[0][1];
+  const s=t.toLowerCase().trim();
+  if(fb){
+    if(CANCEL_RE.test(s)){fb=null;return "Mayli, bekor qildim. Savol bo'lsa, yozing.";}
+    const key=steps[fb.i][0];
+    if(key==='telefon'&&(t.replace(/\D/g,'').length<9))return "Telefon raqamini to'liq yozing, masalan 90 123 45 67.";
+    fb.data[key]=t;fb.i++;
+    if(fb.i<steps.length)return steps[fb.i][1];
+    const d=fb.data;fb=null;setTimeout(()=>{showBooking(d);fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).catch(()=>{})},300);return 'Rahmat, '+d.ism+'! Hammasini yozib oldim. Usta tez orada siz bilan bog\'lanadi.';
+  }
+  if(BOOK_RE.test(s))return startBooking();
+  if(offer&&YES_RE.test(s))return startBooking();
+  if(offer&&NO_RE.test(s)){offer=false;return "Mayli. Yana savol bo'lsa, yozing.";}
+  const hit=FAQ.find(([re])=>re.test(s));
+  if(hit&&(hit===FAQ[0]||hit===FAQ[FAQ.length-1])){offer=false;return hit[1];}
+  offer=true;
+  if(hit)return hit[1]+"\nServisga yozib qo'yaymi? \"Ha\" deb yozing.";
+  return "Tushundim. Aniq sababini usta ko'rikda topadi. Servisga yozib qo'yaymi? \"Ha\" deb yozing yoki qo'ng'iroq qiling: +998 93 989 34 34.";
 }
 
+const MAP_URL='https://yandex.uz/maps?text=40.395804,71.760031&si=gqkmjbndywe330d2mmurv311y4';
+const ADDR_TEXT="Bizning manzil: Farg'ona shahri, Davr saroy to'yxonasi yonida.\nTel: +998 93 989 34 34, +998 97 966 55 44";
+const ADDR_RE=/manzil|adres|address|lokats|lokac|location|joylash|mo'ljal|xarita|qayerdasiz|qayerda\s*(joylash|turasiz|ekansiz|sizlar)|qanday\s*bor(sam|aman)|адрес|локац|где\s*вы|где\s*наход/i;
 async function send(text){
   text=text.trim(); if(!text||busy)return;
   add('user',text); history.push({role:'user',content:text}); inp.value='';
+  if(ADDR_RE.test(text)){const el=add('bot',ADDR_TEXT);const a=document.createElement('a');a.href=MAP_URL;a.target='_blank';a.rel='noopener';a.textContent='📍 Xaritada ochish';a.style.cssText='display:inline-block;margin-top:8px;color:inherit;font-weight:700';el.appendChild(document.createElement('br'));el.appendChild(a);say(ADDR_TEXT);history.push({role:'assistant',content:ADDR_TEXT+'\nXarita: '+MAP_URL});return;}
   busy=true; sendBtn.disabled=true; talk(true);
   const el=add('bot','Yozmoqda…'); el.classList.add('typing');
   let reply='';
