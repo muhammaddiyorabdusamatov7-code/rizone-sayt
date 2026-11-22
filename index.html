@@ -190,6 +190,15 @@ function scripted(t){
     if(fb.i<steps.length)return steps[fb.i][1];
     const d=fb.data;fb=null;setTimeout(()=>{showBooking(d);fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).catch(()=>{})},300);return 'Rahmat, '+d.ism+'! Hammasini yozib oldim. Usta tez orada siz bilan bog\'lanadi.';
   }
+  const ph=t.match(/(\+?\d[\d\s\-()]{7,}\d)/);
+  if(ph&&ph[1].replace(/\D/g,'').length>=9){
+    const prev=history.filter(m=>m.role==='user').map(m=>m.content).filter(c=>c!==t).slice(-3).join(' / ');
+    const rest=t.replace(ph[1],'').trim();
+    const lead={ism:'—',telefon:ph[1].trim(),mashina:'—',muammo:[prev,rest].filter(Boolean).join(' / ')||'—',vaqt:'—'};
+    fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(lead)}).catch(()=>{});
+    offer=false;
+    return "Rahmat! Raqamingizni ustaga yubordim, tez orada sizga qo'ng'iroq qiladi. Shoshilinch bo'lsa: +998 93 989 34 34.";
+  }
   if(BOOK_RE.test(s))return startBooking();
   if(offer&&YES_RE.test(s))return startBooking();
   if(offer&&NO_RE.test(s)){offer=false;return "Mayli. Yana savol bo'lsa, yozing.";}
