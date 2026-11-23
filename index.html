@@ -181,23 +181,31 @@ const CANCEL_RE=/bekor|to'xta|kerak emas|отмен/;
 let offer=false;
 function startBooking(){fb={i:0,data:{}};offer=false;return "Servisga yozib qo'yaman. "+steps[0][1];}
 const CARS=[
- [/onix|oniks|оникс/,"Chevrolet Onix (1.2 turbo)","taxminan 4 litr","0W-20 yoki 5W-30 sintetika (GM dexos1 Gen3 belgili)"],
- [/tracker|treker|трекер/,"Chevrolet Tracker (1.2 turbo)","taxminan 4 litr","0W-20 yoki 5W-30 sintetika (GM dexos1 Gen3 belgili)"],
- [/cobalt|kobalt|кобальт/,"Chevrolet Cobalt (1.5)","taxminan 4 litr","5W-30 sintetika (GM dexos2 yoki dexos1)"],
- [/gentra|jentra|джентра|жентра/,"Chevrolet Gentra (1.5)","taxminan 4 litr","5W-30 sintetika (GM dexos2 yoki dexos1)"],
- [/nexia\s*3|neksiya\s*3|нексия\s*3|nexia-3/,"Chevrolet Nexia 3 (1.5)","taxminan 4 litr","5W-30 sintetika (GM dexos2 yoki dexos1)"],
- [/lacetti|lasetti|lachetti|лачетти/,"Lacetti (1.6)","taxminan 3,75 litr","5W-30 sintetika yoki 10W-40 yarim sintetika"],
- [/nexia|neksiya|нексия/,"Nexia (1.5 / 1.6)","taxminan 3,75 litr","5W-30 sintetika yoki 10W-40 yarim sintetika"],
- [/spark|спарк/,"Chevrolet Spark (1.0 / 1.25)","taxminan 3,2 litr","5W-30 sintetika"],
- [/malibu|малибу/,"Chevrolet Malibu","motoriga qarab 4–4,7 litr (1.5T taxminan 4 l, 2.0T taxminan 4,7 l)","5W-30 sintetika (GM dexos1)"],
- [/damas|дамас|labo|лабо/,"Damas / Labo (0.8)","taxminan 2,7 litr","10W-40 yarim sintetika yoki 5W-30"],
- [/matiz|матиз/,"Matiz (0.8)","taxminan 2,7 litr","10W-40 yarim sintetika yoki 5W-30"]
+ // [regex, nom, motor moyi, mexanika, avtomat, rul]
+ [/onix|oniks|оникс/,"Chevrolet Onix (1.2 turbo)","taxminan 4 litr, 0W-20 yoki 5W-30 sintetika (GM dexos1 Gen3)","6 bosqichli mexanika","6 bosqichli avtomat, Dexron HP","elektr rul, gidravlika moyi yo'q"],
+ [/tracker|treker|трекер/,"Chevrolet Tracker (1.2 turbo)","taxminan 4 litr, 0W-20 yoki 5W-30 sintetika (GM dexos1 Gen3)",null,"6 bosqichli avtomat, Dexron HP","elektr rul, gidravlika moyi yo'q"],
+ [/cobalt|kobalt|кобальт/,"Chevrolet Cobalt (1.5)","3,5–3,7 litr, 5W-30 sintetika (GM dexos2)","1,8 litr, 75W-85 GL-4","6 bosqichli avtomat (6T30), Dexron VI","gidravlik, Dexron, taxminan 1 l"],
+ [/gentra|jentra|джентра|жентра/,"Chevrolet Gentra (1.5)","3,5–3,7 litr, 5W-30 sintetika","1,8 litr, 75W-90 GL-4","6 bosqichli avtomat (6T30), Dexron VI","gidravlik, Dexron, taxminan 1 l"],
+ [/nexia\s*-?3|neksiya\s*-?3|нексия\s*-?3/,"Chevrolet Nexia 3 (1.5)","3,5–3,7 litr, 5W-30 sintetika","1,8 litr, 75W-85 GL-4","6 bosqichli avtomat (6T30), Dexron VI","gidravlik, Dexron, taxminan 1 l"],
+ [/lacetti|lasetti|lachetti|лачетти/,"Lacetti (1.6)","3,75 litr, 5W-30 yoki 10W-40","1,8 litr, 75W-90 GL-4","4 bosqichli avtomat (ZF 4HP16), ZF/ESSO LT 71141","gidravlik, Dexron III, taxminan 1 l"],
+ [/nexia|neksiya|нексия/,"Nexia 2 (1.5 / 1.6)","3,75 litr, 5W-30 yoki 10W-40","taxminan 1,85 litr, 80W-90 GL-4",null,"gidravlik (ba'zi komplektatsiyada yo'q), Dexron II/III, taxminan 1 l"],
+ [/spark|спарк/,"Chevrolet Spark","1.0 motor: 3,8 litr; 1.25 motor: 3,5–3,7 litr; 5W-30 sintetika","taxminan 1,8 litr, 75W-85 GL-4","4 bosqichli avtomat, Dexron VI","gidravlik, taxminan 1 l"],
+ [/matiz|матиз/,"Matiz (0.8)","2,7 litr, 10W-40 yoki 5W-30","taxminan 1,75–2 litr, 75W-90 GL-4",null,"gidravlik bor (oddiy/\"prastoy\" komplektatsiyada yo'q), taxminan 1 l"],
+ [/damas|дамас|labo|лабо/,"Damas / Labo (0.8)","2,7 litr, 10W-40 yoki 5W-30","taxminan 1,3 litr, 80W-90 GL-4",null,"gidravlika yo'q"],
+ [/malibu\s*-?2|малибу\s*-?2/,"Chevrolet Malibu 2 (1.5 / 2.0 turbo)","5 litr, 5W-30 sintetika (GM dexos1)",null,"1.5T: 6 bosqichli (6T40), 2.0T: 9 bosqichli (9T50), Dexron HP/ULV","elektr rul, gidravlika moyi yo'q"],
+ [/malibu|малибу/,"Chevrolet Malibu 1 (2.4)","4,7 litr, 5W-30 sintetika (GM dexos1)",null,"6 bosqichli avtomat (6T45), Dexron VI","gidravlik, taxminan 1 l"],
+ [/captiva|kaptiva|каптива/,"Chevrolet Captiva (2.4)","4,7 litr, 5W-30 sintetika",null,"6 bosqichli avtomat (6T45), Dexron VI","gidravlik, taxminan 1 l"]
 ];
-const OIL_Q=/moy|масл|litr|литр|qancha ket|nechi|necha/;
+const OIL_Q=/moy|масл|litr|литр|qancha ket|nechi|necha|gidravl|gur|гур|rul|руль|karob|короб|akpp|акпп|mexanik|mehanik|механ|avtomat|автомат/;
 function carAnswer(s){
-  const c=CARS.find(([re])=>re.test(s)); if(!c)return null;
-  if(!OIL_Q.test(s))return null;
-  return c[1]+" uchun dvigatel moyi filtr bilan "+c[2]+" ketadi. Tavsiya: "+c[3]+".\nIssiq iqlimimizda dvigatel moyini har 5–7 ming km da, karobka moyini har 35–45 ming km da almashtiring.\nAniq miqdorni usta motor va yilga qarab tekshirib quyadi. Moy almashtirishga yozib qo'yaymi? \"Ha\" deb yozing.";
+  const c=CARS.find(([re])=>re.test(s)); if(!c||!OIL_Q.test(s))return null;
+  const [,name,eng,mt,at,ps]=c, L=[];
+  const wGur=/gidravl|gur|гур|rul|руль/.test(s), wBox=/karob|короб|akpp|акпп|mexanik|mehanik|механ|avtomat|автомат|transmis/.test(s), wEng=/motor|dvigat|двигат|мотор/.test(s)||!(wGur||wBox);
+  if(wEng)L.push("Motor moyi (filtr bilan): "+eng+".");
+  if(wBox||(!wGur&&!wEng)){ if(mt)L.push("Mexanik karobka: "+mt+"."); if(at)L.push("Avtomat karobka: "+at+"."); }
+  if(wGur)L.push("Rul: "+ps+".");
+  if(L.length===0)L.push("Motor moyi (filtr bilan): "+eng+".");
+  return name+":\n"+L.join("\n")+"\nIssiq iqlimimizda motor moyini har 5–7 ming km da, karobka moyini har 35–45 ming km da almashtiring. Aniq miqdorni usta tekshirib quyadi. Servisga yozib qo'yaymi? \"Ha\" deb yozing.";
 }
 function scripted(t){
   const s=t.toLowerCase().trim();
