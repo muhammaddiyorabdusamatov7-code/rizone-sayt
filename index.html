@@ -240,7 +240,7 @@ function scripted(t){
 
 const MAP_URL='https://yandex.uz/maps?text=40.395804,71.760031&si=gqkmjbndywe330d2mmurv311y4';
 const ADDR_TEXT="Bizning manzil: Farg'ona shahri, Davr saroy to'yxonasi yonida.\nTel: +998 93 989 34 34, +998 97 966 55 44";
-const ADDR_RE=/manzil|adres|address|lokats|lokac|location|joylash|mo'ljal|xarita|qayerdasiz|qayerda\s*(joylash|turasiz|ekansiz|sizlar)|qanday\s*bor(sam|aman)|адрес|локац|где\s*вы|где\s*наход/i;
+const ADDR_RE=/manzil|adres|address|lokats|lokac|location|geolok|joylash|mo'ljal|moljal|xarita|qayerd[ae](?!n)|qayerga|qayer\b|qayda\b|qatta|qatda|qatdas|qattas|qaysi joy|servis qayer|qanday bor|qanaqa bor|qanaqib bor|qanday kel|qanaqa kel|адрес|локац|где(\s|\?|$)|куда(\s|\?|$)|как (до|про)ехать|ориентир/i;
 async function send(text){
   text=text.trim(); if(!text||busy)return;
   add('user',text); history.push({role:'user',content:text}); inp.value='';
