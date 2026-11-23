@@ -180,6 +180,25 @@ const NO_RE=/^(yo'q|yoq|kerak emas|нет|shart emas)/;
 const CANCEL_RE=/bekor|to'xta|kerak emas|отмен/;
 let offer=false;
 function startBooking(){fb={i:0,data:{}};offer=false;return "Servisga yozib qo'yaman. "+steps[0][1];}
+const CARS=[
+ [/onix|oniks|оникс/,"Chevrolet Onix (1.2 turbo)","taxminan 4 litr","0W-20 yoki 5W-30 sintetika (GM dexos1 Gen3 belgili)"],
+ [/tracker|treker|трекер/,"Chevrolet Tracker (1.2 turbo)","taxminan 4 litr","0W-20 yoki 5W-30 sintetika (GM dexos1 Gen3 belgili)"],
+ [/cobalt|kobalt|кобальт/,"Chevrolet Cobalt (1.5)","taxminan 4 litr","5W-30 sintetika (GM dexos2 yoki dexos1)"],
+ [/gentra|jentra|джентра|жентра/,"Chevrolet Gentra (1.5)","taxminan 4 litr","5W-30 sintetika (GM dexos2 yoki dexos1)"],
+ [/nexia\s*3|neksiya\s*3|нексия\s*3|nexia-3/,"Chevrolet Nexia 3 (1.5)","taxminan 4 litr","5W-30 sintetika (GM dexos2 yoki dexos1)"],
+ [/lacetti|lasetti|lachetti|лачетти/,"Lacetti (1.6)","taxminan 3,75 litr","5W-30 sintetika yoki 10W-40 yarim sintetika"],
+ [/nexia|neksiya|нексия/,"Nexia (1.5 / 1.6)","taxminan 3,75 litr","5W-30 sintetika yoki 10W-40 yarim sintetika"],
+ [/spark|спарк/,"Chevrolet Spark (1.0 / 1.25)","taxminan 3,2 litr","5W-30 sintetika"],
+ [/malibu|малибу/,"Chevrolet Malibu","motoriga qarab 4–4,7 litr (1.5T taxminan 4 l, 2.0T taxminan 4,7 l)","5W-30 sintetika (GM dexos1)"],
+ [/damas|дамас|labo|лабо/,"Damas / Labo (0.8)","taxminan 2,7 litr","10W-40 yarim sintetika yoki 5W-30"],
+ [/matiz|матиз/,"Matiz (0.8)","taxminan 2,7 litr","10W-40 yarim sintetika yoki 5W-30"]
+];
+const OIL_Q=/moy|масл|litr|литр|qancha ket|nechi|necha/;
+function carAnswer(s){
+  const c=CARS.find(([re])=>re.test(s)); if(!c)return null;
+  if(!OIL_Q.test(s))return null;
+  return c[1]+" uchun dvigatel moyi filtr bilan "+c[2]+" ketadi. Tavsiya: "+c[3]+".\nIssiq iqlimimizda dvigatel moyini har 5–7 ming km da, karobka moyini har 35–45 ming km da almashtiring.\nAniq miqdorni usta motor va yilga qarab tekshirib quyadi. Moy almashtirishga yozib qo'yaymi? \"Ha\" deb yozing.";
+}
 function scripted(t){
   const s=t.toLowerCase().trim();
   if(fb){
@@ -202,10 +221,12 @@ function scripted(t){
   if(BOOK_RE.test(s))return startBooking();
   if(offer&&YES_RE.test(s))return startBooking();
   if(offer&&NO_RE.test(s)){offer=false;return "Mayli. Yana savol bo'lsa, yozing.";}
+  const car=carAnswer(s); if(car){offer=true;return car;}
   const hit=FAQ.find(([re])=>re.test(s));
   if(hit&&(hit===FAQ[0]||hit===FAQ[FAQ.length-1])){offer=false;return hit[1];}
   offer=true;
   if(hit)return hit[1]+"\nServisga yozib qo'yaymi? \"Ha\" deb yozing.";
+  const cm=CARS.find(([re])=>re.test(s)); if(cm){offer=false;return cm[1]+" bo'yicha nima kerak? Masalan: moy almashtirish, xodovoy, karobka yoki diagnostika. Muammoni yozing.";}
   return "Tushundim. Aniq sababini usta ko'rikda topadi. Servisga yozib qo'yaymi? \"Ha\" deb yozing yoki qo'ng'iroq qiling: +998 93 989 34 34.";
 }
 
