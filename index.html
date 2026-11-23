@@ -220,6 +220,7 @@ function carAnswer(s){
   if(L.length===0)L.push("Motor moyi (filtr bilan): "+eng+".");
   return name+":\n"+L.join("\n")+"\nIssiq iqlimimizda motor moyini har 5–7 ming km da, karobka moyini har 35–45 ming km da almashtiring. Aniq miqdorni usta tekshirib quyadi. Servisga yozib qo'yaymi? \"Ha\" deb yozing.";
 }
+const FAR_RE=/uzoq|олеко|далеко|samarq|самарк|toshkent|tashkent|ташкент|buxoro|bukhara|бухар|andijon|андижан|namangan|наманган|xorazm|xorezm|хорезм|urganch|ургенч|navoiy|навои|qashqadaryo|кашкадар|qarshi|карши|surxondaryo|сурхандар|termiz|термез|jizzax|джизак|sirdaryo|сырдар|guliston|гулистан|qoraqalpo|каракалп|nukus|нукус|qozog|казах|qirg'iz|qirgiz|кыргыз|osh shahri/;
 function scripted(t){
   const s=t.toLowerCase().trim();
   if(fb){
@@ -239,6 +240,7 @@ function scripted(t){
     offer=false;
     return "Rahmat! Raqamingizni ustaga yubordim, tez orada sizga qo'ng'iroq qiladi. Shoshilinch bo'lsa: +998 93 989 34 34.";
   }
+  if(FAR_RE.test(s)){offer=false;return "Hurmatli mijoz, sizni tushunamiz! Mobodo Farg'onaga yo'lingiz tushsa, servisimizga albatta kirib o'ting, xursand bo'lamiz. Hozir ham savollaringizga shu yerda javob beraman. Telefon orqali maslahat olishingiz mumkin: +998 93 989 34 34.";}
   if(BOOK_RE.test(s))return startBooking();
   if(offer&&YES_RE.test(s))return startBooking();
   if(offer&&NO_RE.test(s)){offer=false;return "Mayli. Yana savol bo'lsa, yozing.";}
