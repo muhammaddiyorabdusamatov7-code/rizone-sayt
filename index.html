@@ -22,6 +22,12 @@
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
 .wrap{max-width:760px;margin:0 auto;padding-block:16px 32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
 header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hdr-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.social{display:flex;gap:8px}
+.soc{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;text-decoration:none;transition:transform .15s}
+.soc:hover,.soc:focus-visible{transform:translateY(-2px)}
+.soc svg{width:20px;height:20px}
+.soc.tg{background:#229ED9}.soc.ig{background:linear-gradient(45deg,#F58529,#DD2A7B 55%,#8134AF)}.soc.yt{background:#FF0000}
 .logo{font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:-.02em;color:var(--steel)}
 .logo span{color:var(--amber)}
 .callbtn{font-weight:700;background:var(--steel);color:var(--bg);border-radius:999px;padding:10px 18px;text-decoration:none;font-size:15px;white-space:nowrap}
@@ -60,7 +66,7 @@ input:focus-visible{outline:2px solid var(--amber);outline-offset:1px}
 .booking dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0 0 10px}
 .booking dt{color:var(--muted);font-size:14px}.booking dd{margin:0;font-weight:700;min-width:0}
 .booking p{margin:0;font-size:14px;color:var(--muted)}
-@media (max-width:480px){.hero{grid-template-columns:150px 1fr}.usta{width:150px}.mascot{width:100px}#stage{width:130px;height:170px}.logo{font-size:20px}.callbtn{padding:9px 14px;font-size:14px}}
+@media (max-width:480px){.soc{width:34px;height:34px}.soc svg{width:17px;height:17px}.social{gap:6px}.hdr-right{gap:8px}.hero{grid-template-columns:150px 1fr}.usta{width:150px}.mascot{width:100px}#stage{width:130px;height:170px}.logo{font-size:20px}.callbtn{padding:9px 14px;font-size:14px}}
 @media (prefers-reduced-motion:reduce){.mascot *,.usta{animation:none!important}}
 </style>
 </head>
@@ -70,7 +76,14 @@ input:focus-visible{outline:2px solid var(--amber);outline-offset:1px}
 <div class="wrap">
   <header>
     <div class="logo">Riz<span>One</span> avtoservis</div>
-    <a class="callbtn" href="tel:+998939893434">📞 93 989 34 34</a>
+    <div class="hdr-right">
+      <nav class="social" aria-label="Ijtimoiy tarmoqlar">
+        <a class="soc tg" href="https://t.me/RizOneAuto" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.2 13.1l-4.8-1.5c-1-.3-1.1-1 .2-1.5L20.5 2.8c.9-.3 1.7.2 1.4 1.5z"/></svg></a>
+        <a class="soc ig" href="https://www.instagram.com/rizone.avtoservis" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 7.2A4.8 4.8 0 1 0 12 16.8 4.8 4.8 0 0 0 12 7.2zm0 7.9a3.1 3.1 0 1 1 0-6.2 3.1 3.1 0 0 1 0 6.2zm6.1-8.1a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0zM21.9 7c-.1-1.6-.4-3-1.6-4.2S17.6 1.2 16 1.1C14.3 1 9.7 1 8 1.1 6.4 1.2 5 1.5 3.8 2.7S2.2 5.4 2.1 7C2 8.7 2 13.3 2.1 15c.1 1.6.4 3 1.6 4.2s2.6 1.5 4.2 1.6c1.7.1 6.3.1 8 0 1.6-.1 3-.4 4.2-1.6s1.5-2.6 1.6-4.2c.1-1.7.1-6.3.2-8zM19.7 17.5a3.3 3.3 0 0 1-1.8 1.8c-1.3.5-4.3.4-5.9.4s-4.6.1-5.9-.4a3.3 3.3 0 0 1-1.8-1.8c-.5-1.3-.4-4.3-.4-5.5s-.1-4.3.4-5.5a3.3 3.3 0 0 1 1.8-1.8C7.4 4.2 10.4 4.3 12 4.3s4.6-.1 5.9.4a3.3 3.3 0 0 1 1.8 1.8c.5 1.3.4 4.3.4 5.5s.1 4.3-.4 5.5z"/></svg></a>
+        <a class="soc yt" href="https://www.youtube.com/@RizOneAutoservice" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg></a>
+      </nav>
+      <a class="callbtn" href="tel:+998939893434">📞 93 989 34 34</a>
+    </div>
   </header>
 
   <section class="hero">
