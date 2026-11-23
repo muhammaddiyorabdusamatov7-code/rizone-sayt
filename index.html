@@ -256,13 +256,14 @@ function scripted(t){
   return "Tushundim. Aniq sababini usta ko'rikda topadi. Servisga yozib qo'yaymi? \"Ha\" deb yozing yoki qo'ng'iroq qiling: +998 93 989 34 34.";
 }
 
+const SHOP_MAP_URL='https://yandex.uz/maps/org/farzona/209932380976';
 const MAP_URL='https://yandex.uz/maps?text=40.395804,71.760031&si=gqkmjbndywe330d2mmurv311y4';
-const ADDR_TEXT="🔧 Avtoservis: Farg'ona shahri, Davr saroy to'yxonasi yonida. Tel: +998 93 989 34 34\n🛒 Asosiy zapchast do'koni (RizOne Autoparts): Farg'ona shahri, Aeroport ro'parasida, Oq yo'l 34-uy. Tel: +998 97 966 55 44\nIsh vaqti: 8:00–18:00.\nXarita servis manzilini ko'rsatadi:";
+const ADDR_TEXT="🔧 Avtoservis: Farg'ona shahri, Davr saroy to'yxonasi yonida. Tel: +998 93 989 34 34\n🛒 Asosiy zapchast do'koni (RizOne Autoparts): Farg'ona shahri, Aeroport ro'parasida, Oq yo'l 34-uy. Tel: +998 97 966 55 44\nIsh vaqti: 8:00–18:00.";
 const ADDR_RE=/manzil|adres|address|lokats|lokac|location|geolok|joylash|mo'ljal|moljal|xarita|qayerd[ae](?!n)|qayerga|qayer\b|qayda\b|qatta|qatda|qatdas|qattas|qaysi joy|servis qayer|qanday bor|qanaqa bor|qanaqib bor|qanday kel|qanaqa kel|адрес|локац|где(\s|\?|$)|куда(\s|\?|$)|как (до|про)ехать|ориентир/i;
 async function send(text){
   text=text.trim(); if(!text||busy)return;
   add('user',text); history.push({role:'user',content:text}); inp.value='';
-  if(ADDR_RE.test(text)){const el=add('bot',ADDR_TEXT);const a=document.createElement('a');a.href=MAP_URL;a.target='_blank';a.rel='noopener';a.textContent='📍 Xaritada ochish';a.style.cssText='display:inline-block;margin-top:8px;color:inherit;font-weight:700';el.appendChild(document.createElement('br'));el.appendChild(a);say(ADDR_TEXT);history.push({role:'assistant',content:ADDR_TEXT+'\nXarita: '+MAP_URL});return;}
+  if(ADDR_RE.test(text)){const el=add('bot',ADDR_TEXT);[[MAP_URL,'📍 Servis — xaritada'],[SHOP_MAP_URL,'📍 Zapchast do\'koni — xaritada']].forEach(([u,l])=>{const a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener';a.textContent=l;a.style.cssText='display:inline-block;margin-top:8px;color:inherit;font-weight:700';el.appendChild(document.createElement('br'));el.appendChild(a);});say(ADDR_TEXT);history.push({role:'assistant',content:ADDR_TEXT+'\nServis xaritasi: '+MAP_URL+'\nDo\'kon xaritasi: '+SHOP_MAP_URL});return;}
   busy=true; sendBtn.disabled=true; talk(true);
   const el=add('bot','Yozmoqda…'); el.classList.add('typing');
   let reply='';
