@@ -145,7 +145,7 @@ input:focus-visible{outline:2px solid var(--amber);outline-offset:1px}
       <button class="send" id="send" aria-label="Yuborish">→</button>
     </form>
   </section>
-  <p class="foot">AI xato qilishi mumkin — aniq tashxis va narxni usta ko'rikdan keyin aytadi. Farg'ona sh., Davr saroy to'yxonasi yonida · <a href="https://t.me/RizOneAuto" style="color:inherit">Telegram</a> · <a href="https://www.instagram.com/rizone.avtoservis" style="color:inherit">Instagram</a> · <a href="https://yandex.uz/maps?text=40.395804,71.760031&si=gqkmjbndywe330d2mmurv311y4" style="color:inherit">Xarita</a></p>
+  <p class="foot">AI xato qilishi mumkin — aniq tashxis va narxni usta ko'rikdan keyin aytadi. Farg'ona sh., Davr saroy to'yxonasi yonida · Ish vaqti 8:00–18:00 · <a href="https://t.me/RizOneAuto" style="color:inherit">Telegram</a> · <a href="https://www.instagram.com/rizone.avtoservis" style="color:inherit">Instagram</a> · <a href="https://yandex.uz/maps?text=40.395804,71.760031&si=gqkmjbndywe330d2mmurv311y4" style="color:inherit">Xarita</a></p>
 </div>
 
 <script>
@@ -181,10 +181,13 @@ const FAQ=[
  [/motor|dvigatel|двигат/,"Motor ta'mirini qilamiz. Avval kompyuter diagnostika qilib, sababini aniq topamiz."],
  [/diagnost|kompyuter|chek|check|диагност/,"Kompyuter va xodovoy diagnostika qilamiz, vibrostend ham bor."],
  [/razval|balans|развал/,"Razval va balansirovka qilamiz."],
- [/zapchast|ehtiyot qism|detal|запчаст/,"Original GM zapchast do'konimiz bor, yetkazib berish ham bor. Aniq qism uchun qo'ng'iroq qiling: +998 93 989 34 34."],
+ [/zapchast|ehtiyot qism|detal|запчаст|autoparts/,"RizOne Autoparts do'konimizda original GM ehtiyot qismlari bor, yetkazib berish ham bor. Do'kon va servis bir joyda. Zapchast bo'yicha: +998 97 966 55 44."],
  [/narx|qancha|necha pul|стоим|цена|сколько/,"Aniq narxni usta mashinani ko'rgandan keyin aytadi. Batafsil: +998 93 989 34 34."],
- [/ish vaqt|soat nech|ochiq|yopiq|dam olish|qachon ishla|график|время работ/,"Ish vaqtini aniqlash uchun qo'ng'iroq qiling: +998 93 989 34 34."],
- [/telefon|raqam|nomer|aloqa|bog'lan|qo'ng'iroq|telegram|номер/,"Bizga qo'ng'iroq qiling: +998 93 989 34 34 yoki +998 97 966 55 44. Telegram: @RizOneAuto."],
+ [/ish vaqt|soat nech|ochiq|yopiq|dam olish|qachon ishla|nechada|nechagacha|график|время работ|до скольки/,"Ish vaqtimiz: 8:00 dan 18:00 gacha. Kelishdan oldin qo'ng'iroq qilsangiz, sizni kutib olamiz: +998 93 989 34 34."],
+ [/fozilxon|rahbar|direktor|egasi|xo'jayin|kim ochgan|директор|владел/,"RizOne rahbari Fozilxon Azamov. Avtoservis va avtozapchast sohasida 20 yildan ortiq tajribasi bor. Instagram sahifasi: @fozilxon.azamov"],
+ [/haqingizda|haqida ma'lumot|kimsizlar|siz kimsiz|rizone nima|о вас|кто вы/,"RizOne Autoparts va RizOne avtoservis — ehtiyot qismlar do'koni va servis bir joyda. Motor, xodovoy, AKPP/CVT/DSG ta'miri, diagnostika, moy almashtirish, razval va boshqa xizmatlar. Rahbari Fozilxon Azamov, 20 yildan ortiq tajriba. Farg'ona shahri, Davr saroy to'yxonasi yonida, 8:00–18:00."],
+ [/xizmat|nima qilasiz|qanday ish|услуг/,"Xizmatlarimiz: motor ta'miri, xodovoy (Tracker, Onix, Gentra uchun \"Mers xodovoy\"), AKPP/CVT/DSG ta'miri, kompyuter va xodovoy diagnostika, vibrostend, moy almashtirish, razval-balansirovka, pechka va radiator, original GM zapchastlar (yetkazib berish bor), vizov xizmati."],
+ [/telefon|raqam|nomer|aloqa|bog'lan|qo'ng'iroq|telegram|instagram|youtube|номер/,"Servis: +998 93 989 34 34. Zapchast do'koni: +998 97 966 55 44. Telegram: @RizOneAuto, Instagram: @rizone.avtoservis, YouTube: @RizOneAutoservice."],
  [/rahmat|raxmat|спасибо/,"Arzimaydi! Yana savol bo'lsa, yozing."]
 ];
 const BOOK_RE=/yozil|yozib qo'y|bron|zapis|запис|kelmoqchi|olib kel/;
@@ -254,7 +257,7 @@ function scripted(t){
 }
 
 const MAP_URL='https://yandex.uz/maps?text=40.395804,71.760031&si=gqkmjbndywe330d2mmurv311y4';
-const ADDR_TEXT="Bizning manzil: Farg'ona shahri, Davr saroy to'yxonasi yonida.\nTel: +998 93 989 34 34, +998 97 966 55 44";
+const ADDR_TEXT="Bizning manzil: Farg'ona shahri, Davr saroy to'yxonasi yonida.\nIsh vaqti: 8:00–18:00.\nServis: +998 93 989 34 34\nZapchast: +998 97 966 55 44";
 const ADDR_RE=/manzil|adres|address|lokats|lokac|location|geolok|joylash|mo'ljal|moljal|xarita|qayerd[ae](?!n)|qayerga|qayer\b|qayda\b|qatta|qatda|qatdas|qattas|qaysi joy|servis qayer|qanday bor|qanaqa bor|qanaqib bor|qanday kel|qanaqa kel|адрес|локац|где(\s|\?|$)|куда(\s|\?|$)|как (до|про)ехать|ориентир/i;
 async function send(text){
   text=text.trim(); if(!text||busy)return;
